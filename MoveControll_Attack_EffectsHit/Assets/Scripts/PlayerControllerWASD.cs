@@ -6,9 +6,11 @@ public class PlayerControllerWASD : MonoBehaviour
 {
     [SerializeField] private float playerSpeed = 10f;
     [SerializeField] private float rotationSpeed = 10f;
+    private float t;
     private Rigidbody playerRb;
     private Animator playerAnim;
 
+    public bool isAttack = false;
     
 
     void Start()
@@ -28,6 +30,7 @@ public class PlayerControllerWASD : MonoBehaviour
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
         }
+
         
         AnimtationWalking(v, h);
         AnimationAttack();
@@ -41,8 +44,20 @@ public class PlayerControllerWASD : MonoBehaviour
             playerAnim.SetBool("isRunning", false);
             playerSpeed = 50f;
         }
+        
+        
 
-        Debug.Log("Скорость персонажа = " + playerSpeed);
+        if (isAttack) // if attack is true
+        {
+            t += Time.deltaTime;    // start Time.deltaTime
+            Debug.Log(t);
+            if(t > 0.9f)    // when t > 0.9f
+            {
+                isAttack = false;   // change attack on false
+                t = 0f;             // and t = 0 for next hits
+            }
+        }
+
     }
 
 
@@ -63,11 +78,11 @@ public class PlayerControllerWASD : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             playerAnim.SetBool("IsAttack", true);
+            isAttack = true;
         }
         else
         {
-            playerAnim.SetBool("IsAttack", false);
-
+            playerAnim.SetBool("IsAttack", false);           
         }
     }
 }

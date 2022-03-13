@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
-    public ParticleSystem hit;    
+    public ParticleSystem hit;
+    private PlayerControllerWASD onAttack;
+
+    private void Start()
+    {
+        onAttack = GameObject.Find("Player").GetComponent<PlayerControllerWASD>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("walls"))
+        if (onAttack.isAttack)
         {
             hit.Play();
         }
+                      
     }
 }
